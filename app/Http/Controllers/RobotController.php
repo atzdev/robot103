@@ -23,7 +23,7 @@ class RobotController extends Controller
 			'channelSecret' => getenv('CHANNEL_SECRET'),
 			'channelMid' => getenv('MID'),
 		];
-		$this->bot = new LINEBot($this->config, new HTTPClient($this->config));
+		$this->bot = new LINEBot($this->config, new GuzzleHTTPClient($this->config));
 		$this->req = $request;
 	}
 
