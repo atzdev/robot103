@@ -15,3 +15,6 @@
 });*/
 Route::get('/', 'RobotController@callback');
 Route::post('/', 'RobotController@callback');
+Route::get('/home', function(){
+	return 'ok';
+});
