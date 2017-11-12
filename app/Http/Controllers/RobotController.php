@@ -21,7 +21,7 @@ class RobotController extends Controller
 		$this->config = [
 			'channelId' => getenv('CHANNEL_ID'),
 			'channelSecret' => getenv('CHANNEL_SECRET'),
-			'channelMid' => getenv(MID),
+			'channelMid' => getenv('MID'),
 		];
 		$this->bot = new LINEBot($this->config, new HTTPClient($this->config));
 		$this->req = $request;
