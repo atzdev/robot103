@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 // LINEBot 
 use LINE\LINEBot;
-use LINE\LINEBot\HTTPClient\curlHTTPClient;
+use LINE\LINEBot\HTTPClient\CurlHTTPClient;
 use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 // add 
 use LINE\LINEBot\Response;
