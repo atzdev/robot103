@@ -11,6 +11,4 @@
 |
 */
 
-Route::get('/', function () {
-    return 'ok';
-});
+Route::get('/', 'RobotController@index');
