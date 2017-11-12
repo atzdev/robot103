@@ -6,25 +6,34 @@ use Illuminate\Http\Request;
 
 // LINEBot 
 use LINE\LINEBot;
-use LINE\LINEBot\HTTPClient\GuzzleHTTPClient;
+use LINE\LINEBot\HTTPClient\curlHTTPClient;
+use LINE\LINEBot\MessageBuilder\TextMessageBuilder;
 // add 
 use LINE\LINEBot\Response;
 
 class RobotController extends Controller
 {
 
+	//protected $content;
+	protected $events;
+
+
 	protected $config;
 	protected $bot;
 	protected $req;
 
-	public function __construct(Request $request) {
+	public function __construct() {
+		$content = file_get_contents('php://input');
+		$this->events = json_decode($content, true);
 		$this->config = [
 			'channelId' => getenv('CHANNEL_ID'),
 			'channelSecret' => getenv('CHANNEL_SECRET'),
 			'channelMid' => getenv('MID'),
 		];
-		$this->bot = new LINEBot($this->config, new GuzzleHTTPClient($this->config));
-		$this->req = $request;
+		
+		$httpClient = new CurlHTTPClient($this->config['channelMid']);
+		$bot = new LINEBot($httpClient, $this->config);
+		
 	}
 
     public function index() {
@@ -33,19 +42,36 @@ class RobotController extends Controller
 
     public function callback() {
     	$bot = $this->bot;
-    	$receives = $bot->createReceivesFromJSON($this->req->getContent());
-    	foreach ($receives as $receive) {
-    		if ($receive->isMessage()) {
-    			if ($receive->isText()) {
-    				$text = $receive->getText();
-    				$bot->sendText($receive->getFromMid(), $text);
-    			} else {
-    				$bot->sendText($receive->getFromMid(), 'not text!!');
-    			}
-    		} else {
-    			$bot->sendText($receive->getFromMid(), 'not Message');
-    		}
+    	
+    	//dd($this->events);
+    	if(!is_null($this->events)) {
+	    	foreach ($this->events as $event) {
+	    		// Get replyToken
+	    		$replyToken = $event['replyToken'];
+
+	    		if ($event['type'] == 'message') {
+
+	    			if ($event['message']['type'] == 'text') {
+	    				
+
+	    				//Reply Message
+	    				$respMessage = 'Hello, your message is : '. $event['message']['text'];
+
+	    				$textMessageBuilder = new TextMessageBuilder($respMessage);
+	    				$response = $bot->replyMessage($replyToken, $TextMessageBuilder);
+	    				//$bot->sendText($event->getFromMid(), $text);
+	    			} else {
+	    				//$bot->sendText($event->getFromMid(), 'not text!!');
+	    				$response = $bot->replyMessage($replyToken, 'not text');
+	    			}
+	    		} else {
+	    			//$bot->sendText($event->getFromMid(), 'not Message');
+	    			$response = $bot->replyMessage($replyToken, 'not Message');
+	    		}
+	    	}
     	}
+
+
     	return ;
     }
 }
