@@ -44,8 +44,8 @@ class RobotController extends Controller
     	$bot = $this->bot;
     	
     	//dd($this->events);
-    	if(!is_null($this->events)) {
-	    	foreach ($this->events as $event) {
+    	if(!is_null($this->events['events'])) {
+	    	foreach ($this->events['events'] as $event) {
 	    		// Get replyToken
 	    		$replyToken = $event['replyToken'];
 
