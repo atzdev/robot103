@@ -10,5 +10,8 @@
 | contains the "web" middleware group. Now create something great!
 |
 */
-
-Route::get('/', 'RobotController@index');
+Route::get('/', function(){
+	return 'ok';
+});
+Route::get('/callback', 'RobotController@callback');
+Route::post('/callback', 'RobotController@callback');
