@@ -6,7 +6,7 @@ use Illuminate\Http\Request;
 
 // LINEBot 
 use LINE\LINEBot;
-use LINE\LINEBot\HTTPClient;
+use LINE\LINEBot\HTTPClient\GuzzleHTTPClient;
 // add 
 use LINE\LINEBot\Response;
 
